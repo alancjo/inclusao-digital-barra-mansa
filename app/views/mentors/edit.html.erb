@@ -1,0 +1,8 @@
+<div class="max-w-3xl">
+  <%= breadcrumb(['Início', root_path], ['Mentores', mentors_path], [@mentor.full_name, mentor_path(@mentor)], ['Editar', nil]) %>
+  <h1 class="text-2xl font-semibold text-slate-900 mb-6">Editar Mentor</h1>
+	<div class="rounded-xl bg-white border border-slate-200 p-6 shadow-sm mb-6">
+		<%= render 'form', mentor: @mentor %>
+	</div>
+	<%= link_to 'Voltar', mentor_path(@mentor), class: 'text-sm font-medium text-slate-600 hover:text-slate-800' %>
+</div>

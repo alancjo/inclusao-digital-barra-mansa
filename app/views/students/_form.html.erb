@@ -1,0 +1,49 @@
+<%= form_with(model: student, class: "space-y-6") do |f| %>
+  <% if student.errors.any? %>
+    <div class="rounded-md border border-red-200 bg-red-50 p-4">
+      <h4 class="text-sm font-semibold text-red-700 mb-2"><%= pluralize(student.errors.count, 'erro') %> impediram o salvamento:</h4>
+      <ul class="list-disc list-inside text-xs text-red-600 space-y-1">
+        <% student.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="grid gap-6 sm:grid-cols-2">
+    <div class="flex flex-col gap-1 sm:col-span-2">
+      <%= f.label :full_name, class: 'text-xs font-semibold uppercase tracking-wide text-slate-600' do %>
+        Nome completo <span class="text-red-500">*</span>
+      <% end %>
+      <%= f.text_field :full_name, required: true, class: "rounded-md border caret-brand-600 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:ring-offset-1 text-sm #{student.errors[:full_name].any? ? 'border-red-500' : 'border-slate-300'}" %>
+    </div>
+    <div class="flex flex-col gap-1 sm:col-span-2">
+      <%= f.label :interests, class: 'text-xs font-semibold uppercase tracking-wide text-slate-600' do %>
+        Interesses (separar por vírgula) <span class="text-red-500">*</span>
+      <% end %>
+      <%= f.text_field :interests, required: true, placeholder: 'Python, lógica, design UX', class: 'rounded-md border border-slate-300 caret-brand-600 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:ring-offset-1 text-sm' %>
+    </div>
+    <div class="sm:col-span-2 flex flex-col gap-1">
+      <%= f.label :learning_goal, class: 'text-xs font-semibold uppercase tracking-wide text-slate-600' do %>
+        Objetivo de aprendizagem <span class="text-red-500">*</span>
+      <% end %>
+      <%= f.text_area :learning_goal, required: true, rows: 4, placeholder: 'Quero criar meus primeiros scripts em Python para automatizar tarefas.', class: 'rounded-md border border-slate-300 caret-brand-600 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:ring-offset-1 text-sm' %>
+    </div>
+    <div class="flex flex-col gap-1">
+      <%= f.label :availability, 'Disponibilidade', class: 'text-xs font-semibold uppercase tracking-wide text-slate-600' %>
+      <%= f.text_field :availability, placeholder: 'Sábados manhã', class: 'rounded-md border border-slate-300 caret-brand-600 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:ring-offset-1 text-sm' %>
+    </div>
+    <div class="flex flex-col gap-1">
+      <%= f.label :proficiency_level, 'Nível', class: 'text-xs font-semibold uppercase tracking-wide text-slate-600' %>
+      <%= f.select :proficiency_level, [['Iniciante','iniciante'],['Intermediário','intermediario'],['Avançado','avancado']], { include_blank: 'Selecione' }, class: 'rounded-md border border-slate-300 caret-brand-600 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:ring-offset-1 text-sm bg-white' %>
+    </div>
+    <div class="flex flex-col gap-1 sm:col-span-2">
+      <%= f.label :contact_info, class: 'text-xs font-semibold uppercase tracking-wide text-slate-600' do %>
+        Contato (email) <span class="text-red-500">*</span>
+      <% end %>
+      <%= f.email_field :contact_info, required: true, placeholder: 'email@exemplo.com', class: "rounded-md border caret-brand-600 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:ring-offset-1 text-sm #{student.errors[:contact_info].any? ? 'border-red-500' : 'border-slate-300'}" %>
+    </div>
+  </div>
+  <div>
+    <%= f.submit (student.persisted? ? 'Atualizar Aluno' : 'Criar Aluno'), class: 'inline-flex items-center rounded-md bg-slate-800 hover:bg-slate-700 text-white px-5 py-2 text-sm font-medium shadow' %>
+  </div>
+<% end %>

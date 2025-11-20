@@ -1,0 +1,54 @@
+<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-10">
+  <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col">
+    <span class="text-xs uppercase tracking-wide text-slate-500 font-semibold">Mentores</span>
+    <span class="mt-2 text-3xl font-semibold text-slate-900"><%= @stats[:mentors_count] %></span>
+    <span class="mt-1 text-[11px] text-slate-500">Cadastrados</span>
+  </div>
+  <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col">
+    <span class="text-xs uppercase tracking-wide text-slate-500 font-semibold">Alunos</span>
+    <span class="mt-2 text-3xl font-semibold text-slate-900"><%= @stats[:students_count] %></span>
+    <span class="mt-1 text-[11px] text-slate-500">Participando</span>
+  </div>
+  <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col">
+    <span class="text-xs uppercase tracking-wide text-slate-500 font-semibold">Apoiadores</span>
+    <span class="mt-2 text-3xl font-semibold text-slate-900"><%= @stats[:supporters_count] %></span>
+    <span class="mt-1 text-[11px] text-slate-500">Instituições/Apoios</span>
+  </div>
+  <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col">
+    <span class="text-xs uppercase tracking-wide text-slate-500 font-semibold">Expertises</span>
+    <span class="mt-2 text-3xl font-semibold text-slate-900"><%= @stats[:expertise_distribution].size %></span>
+    <span class="mt-1 text-[11px] text-slate-500">Áreas diferentes</span>
+  </div>
+</div>
+<div class="grid gap-6 lg:grid-cols-2 mb-12">
+  <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <h3 class="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">Distribuição de Expertises</h3>
+    <% if @stats[:expertise_distribution].any? %>
+      <ul class="space-y-2">
+        <% @stats[:expertise_distribution].each do |expertise, count| %>
+          <li class="flex items-center justify-between text-sm">
+            <span class="font-medium text-slate-700"><%= expertise %></span>
+            <span class="text-xs px-2 py-1 rounded bg-slate-100 text-slate-600"><%= count %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-xs text-slate-500">Nenhuma expertise cadastrada.</p>
+    <% end %>
+  </div>
+  <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <h3 class="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">Top Interesses de Alunos</h3>
+    <% if @stats[:top_interests].any? %>
+      <ul class="space-y-2">
+        <% @stats[:top_interests].each do |interest, count| %>
+          <li class="flex items-center justify-between text-sm">
+            <span class="font-medium text-slate-700"><%= interest %></span>
+            <span class="text-xs px-2 py-1 rounded bg-brand-50 text-brand-700 border border-brand-200"><%= count %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-xs text-slate-500">Nenhum interesse cadastrado.</p>
+    <% end %>
+  </div>
+</div>

@@ -1,28 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full bg-slate-50">
   <head>
-    <title><%= content_for(:title) || "Inclusao Digital Bm" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
+    <title><%= content_for(:title) || "Inclusão Digital Barra Mansa" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#fff7ed',
+                100: '#ffedd5',
+                200: '#fed7aa',
+                300: '#fdba74',
+                400: '#fb923c',
+                500: '#f97316',
+                600: '#ea580c',
+                700: '#c2410c',
+                800: '#9a3412',
+                900: '#7c2d12'
+              }
+            }
+          }
+        }
+      }
+    </script>
     <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <link rel="icon" href="/icon.png" type="image/png" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.png" />
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
-  <body>
-    <%= yield %>
+  <body class="min-h-full flex flex-col text-slate-800">
+    <nav class="bg-slate-900 text-white shadow relative z-10">
+      <div class="max-w-7xl mx-auto px-4 py-3">
+        <div class="flex items-center justify-between">
+          <a href="/" class="flex items-center gap-2 font-semibold text-lg tracking-wide">
+            <span class="bg-brand-500 text-white px-2 py-1 rounded">IDBM</span>
+            <span class="hidden sm:inline">Inclusão Digital Barra Mansa</span>
+          </a>
+          <div class="hidden md:flex gap-3">
+            <%= link_to 'Home', root_path, class: nav_link_class(root_path) %>
+            <%= link_to 'Alunos', students_path, class: nav_link_class(students_path) %>
+            <%= link_to 'Mentores', mentors_path, class: nav_link_class(mentors_path) %>
+            <%= link_to 'Conexões', match_path, class: nav_link_class(match_path) %>
+            <%= link_to 'Apoiadores', supporters_path, class: nav_link_class(supporters_path) %>
+            <%= link_to 'Sobre', about_path, class: nav_link_class(about_path) %>
+          </div>
+          <div class="flex items-center gap-3">
+            <%= link_to 'Sou Mentor', new_mentor_path, class: 'hidden md:inline-flex items-center rounded-md bg-brand-500 hover:bg-brand-600 transition px-4 py-2 text-sm font-medium shadow text-white' %>
+            <button id="mobile-menu-btn" class="md:hidden p-2 rounded hover:bg-slate-800" aria-label="Menu">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+          </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden mt-3 pb-2 space-y-2">
+          <%= link_to 'Home', root_path, class: mobile_nav_link_class(root_path) %>
+          <%= link_to 'Alunos', students_path, class: mobile_nav_link_class(students_path) %>
+          <%= link_to 'Mentores', mentors_path, class: mobile_nav_link_class(mentors_path) %>
+          <%= link_to 'Conexões', match_path, class: mobile_nav_link_class(match_path) %>
+          <%= link_to 'Apoiadores', supporters_path, class: mobile_nav_link_class(supporters_path) %>
+          <%= link_to 'Sobre', about_path, class: mobile_nav_link_class(about_path) %>
+          <div class="pt-2 border-t border-white/20">
+            <%= link_to 'Sou Mentor', new_mentor_path, class: 'block rounded-md bg-brand-500 hover:bg-brand-600 px-4 py-2 text-sm font-medium text-center' %>
+            <%= link_to 'Quero Apoiar', new_supporter_path, class: 'block rounded-md border border-white/40 px-4 py-2 text-sm font-medium text-center hover:bg-white/10 mt-2' %>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <script>
+      document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+        document.getElementById('mobile-menu')?.classList.toggle('hidden');
+      });
+      function applyStagger() {
+        document.querySelectorAll('[data-animate-stagger]').forEach(container => {
+          const children = Array.from(container.children);
+          children.forEach((el, idx) => {
+            el.style.animationDelay = (idx * 70) + 'ms';
+            el.classList.add('animate-fade-slide');
+          });
+        });
+      }
+      document.addEventListener('turbo:load', applyStagger);
+      document.addEventListener('DOMContentLoaded', applyStagger);
+    </script>
+    <div class="flex-1 w-full">
+      <div class="max-w-7xl mx-auto px-4 pt-6">
+        <%= render 'shared/flash' %>
+        <%= yield %>
+      </div>
+    </div>
+    <footer class="mt-12 bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+      <p>Projeto Extensionista • Alan Carlos Jorge de Oliveira • RU 3892233</p>
+      <p class="mt-1"><%= link_to 'Sobre o Projeto', about_path, class: 'text-brand-600 hover:text-brand-700 font-medium' %></p>
+    </footer>
   </body>
 </html>

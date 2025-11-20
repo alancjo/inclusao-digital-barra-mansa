@@ -1,0 +1,24 @@
+<%= breadcrumb(['Início', root_path], ['Apoiadores', nil]) %>
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-semibold text-slate-900">Apoiadores</h1>
+  <%= link_to 'Novo Apoiador', new_supporter_path, class: 'inline-flex items-center rounded-md bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 text-sm font-medium shadow' %>
+</div>
+<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-animate-stagger>
+  <% @supporters.each do |supporter| %>
+    <div class="rounded-xl bg-white border border-slate-200 p-5 shadow-sm hover:shadow-md transition flex flex-col">
+      <div class="flex items-start justify-between mb-2">
+        <h3 class="font-semibold text-slate-900 text-base"><%= supporter.name %></h3>
+        <span class="text-[10px] uppercase tracking-wide font-semibold text-slate-500"><%= supporter.support_type %></span>
+      </div>
+      <p class="text-xs text-slate-600 mb-3">Contato: <%= supporter.contact_info %></p>
+      <div class="mt-auto flex gap-4 text-[11px] font-semibold">
+        <%= link_to 'Ver', supporter_path(supporter), class: 'text-brand-600 hover:text-brand-700' %>
+        <%= link_to 'Editar', edit_supporter_path(supporter), class: 'text-slate-600 hover:text-slate-800' %>
+        <%= link_to 'Remover', supporter, data: { turbo_method: :delete, confirm: 'Tem certeza?' }, class: 'text-red-600 hover:text-red-700' %>
+      </div>
+    </div>
+  <% end %>
+  <% if @supporters.empty? %>
+    <div class="col-span-full text-sm text-slate-500">Nenhum apoiador cadastrado.</div>
+  <% end %>
+</div>

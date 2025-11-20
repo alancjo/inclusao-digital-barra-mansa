@@ -1,0 +1,28 @@
+<%= breadcrumb(['Início', root_path], ['Alunos', nil]) %>
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-semibold text-slate-900">Alunos</h1>
+  <%= link_to 'Novo Aluno', new_student_path, class: 'inline-flex items-center rounded-md bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 text-sm font-medium shadow' %>
+</div>
+<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-animate-stagger>
+  <% @students.each do |student| %>
+    <div class="rounded-xl bg-white border border-slate-200 p-5 shadow-sm hover:shadow-md transition flex flex-col">
+      <div class="flex items-start justify-between mb-2">
+        <h3 class="font-semibold text-slate-900 text-base"><%= student.full_name %></h3>
+        <% if student.proficiency_level.present? %>
+          <span class="text-[10px] uppercase tracking-wide font-semibold bg-slate-100 text-slate-600 px-2 py-1 rounded"><%= student.proficiency_level %></span>
+        <% end %>
+      </div>
+      <span class="block text-[11px] font-bold tracking-wide text-slate-500 mb-2"><%= student.interests_tokens.join(', ') %></span>
+      <p class="text-sm text-slate-600 line-clamp-4 flex-1"><%= student.learning_goal.presence || 'Sem objetivo informado.' %></p>
+      <p class="mt-3 text-xs text-slate-700 font-medium flex items-center gap-1"><span class="text-slate-400">📧</span> <%= student.contact_info %></p>
+      <div class="mt-4 flex gap-4 text-[11px] font-semibold">
+        <%= link_to 'Ver', student_path(student), class: 'text-brand-600 hover:text-brand-700' %>
+        <%= link_to 'Editar', edit_student_path(student), class: 'text-slate-600 hover:text-slate-800' %>
+        <%= link_to 'Remover', student, data: { turbo_method: :delete, confirm: 'Tem certeza?' }, class: 'text-red-600 hover:text-red-700' %>
+      </div>
+    </div>
+  <% end %>
+  <% if @students.empty? %>
+    <div class="col-span-full text-sm text-slate-500">Nenhum aluno cadastrado.</div>
+  <% end %>
+</div>

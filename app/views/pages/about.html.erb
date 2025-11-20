@@ -1,0 +1,66 @@
+<%= breadcrumb(['Início', root_path], ['Sobre o Projeto', nil]) %>
+<div class="max-w-4xl mx-auto">
+   <div class="mb-10" data-animate-stagger>
+    <h1 class="text-3xl font-bold text-slate-900 mb-4">Sobre o Projeto</h1>
+    <p class="text-lg text-slate-600 leading-relaxed">Inclusão Digital Barra Mansa é uma iniciativa extensionista que visa conectar alunos de baixa renda com mentores voluntários de tecnologia, promovendo oportunidades reais de aprendizado e inserção digital.</p>
+  </div>
+
+  <div class="space-y-8" data-animate-stagger>
+    <section class="rounded-xl bg-white border border-slate-200 p-6 shadow-sm">
+      <h2 class="text-xl font-semibold text-slate-900 mb-3">🎯 Objetivo</h2>
+      <p class="text-sm text-slate-700 leading-relaxed">Democratizar o acesso ao conhecimento em tecnologia, criando uma ponte entre mentores experientes e alunos motivados que desejam aprender programação, design, lógica computacional e outras áreas digitais, independentemente de sua condição socioeconômica.</p>
+    </section>
+
+    <section class="rounded-xl bg-white border border-slate-200 p-6 shadow-sm">
+      <h2 class="text-xl font-semibold text-slate-900 mb-3">🤝 Como Funciona</h2>
+        <div class="space-y-3 text-sm text-slate-700" data-animate-stagger>
+        <div class="flex gap-3">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">1</span>
+          <p><strong>Mentores se cadastram</strong> informando suas especialidades, disponibilidade e experiência.</p>
+        </div>
+        <div class="flex gap-3">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">2</span>
+          <p><strong>Alunos se inscrevem</strong> declarando seus interesses, objetivos de aprendizagem e disponibilidade.</p>
+        </div>
+        <div class="flex gap-3">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">3</span>
+          <p><strong>Sistema faz a conexão aluno <> mentor</strong> analisando compatibilidade de expertise, interesses e disponibilidade.</p>
+        </div>
+        <div class="flex gap-3">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">4</span>
+          <p><strong>Apoiadores colaboram</strong> oferecendo espaço físico, lanches ou outros recursos para viabilizar encontros.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-xl bg-white border border-slate-200 p-6 shadow-sm">
+      <h2 class="text-xl font-semibold text-slate-900 mb-3">💡 Impacto Esperado</h2>
+      <ul class="list-disc list-inside space-y-2 text-sm text-slate-700" data-animate-stagger>
+        <li>Inclusão digital de jovens e adultos de baixa renda</li>
+        <li>Desenvolvimento de habilidades técnicas valorizadas pelo mercado</li>
+        <li>Fortalecimento do espírito comunitário e solidário</li>
+        <li>Criação de rede de apoio e oportunidades profissionais</li>
+        <li>Redução da desigualdade no acesso ao conhecimento tecnológico</li>
+      </ul>
+    </section>
+
+    <section class="rounded-xl bg-white border border-slate-200 p-6 shadow-sm">
+      <h2 class="text-xl font-semibold text-slate-900 mb-3">👨‍🎓 Autor</h2>
+      <div class="text-sm text-slate-700">
+        <p class="font-medium">Alan Carlos Jorge de Oliveira</p>
+        <p class="text-slate-600">RU: 3892233</p>
+        <p class="mt-2 text-slate-600">Projeto desenvolvido como Atividade Extensionista para curso universitário, com o objetivo de aplicar conhecimentos técnicos em prol da comunidade de Barra Mansa.</p>
+      </div>
+    </section>
+
+    <section class="rounded-xl bg-gradient-to-br from-brand-50 to-slate-50 border border-brand-200 p-6 shadow-sm">
+      <h2 class="text-xl font-semibold text-slate-900 mb-3">📢 Participe</h2>
+      <p class="text-sm text-slate-700 mb-4">Se você quer contribuir como mentor, apoiador ou se é um aluno interessado em aprender, cadastre-se agora e faça parte dessa transformação!</p>
+      <div class="flex flex-wrap gap-3">
+        <%= link_to 'Cadastrar como Mentor', new_mentor_path, class: 'inline-flex items-center rounded-md bg-brand-500 hover:bg-brand-600 text-white px-5 py-2 text-sm font-medium shadow' %>
+        <%= link_to 'Cadastrar como Aluno', new_student_path, class: 'inline-flex items-center rounded-md bg-slate-800 hover:bg-slate-700 text-white px-5 py-2 text-sm font-medium shadow' %>
+        <%= link_to 'Quero Apoiar', new_supporter_path, class: 'inline-flex items-center rounded-md border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 px-5 py-2 text-sm font-medium shadow-sm' %>
+      </div>
+    </section>
+  </div>
+</div>

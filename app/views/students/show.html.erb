@@ -1,0 +1,24 @@
+<div class="max-w-2xl">
+  <%= breadcrumb(['Início', root_path], ['Alunos', students_path], [@student.full_name, nil]) %>
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-semibold text-slate-900"><%= @student.full_name %></h1>
+    <%= link_to 'Editar', edit_student_path(@student), class: 'inline-flex items-center rounded-md bg-slate-800 hover:bg-slate-700 text-white px-3 py-2 text-sm font-medium' %>
+  </div>
+  <div class="rounded-xl bg-white border border-slate-200 p-6 shadow-sm space-y-4">
+    <div class="flex flex-wrap gap-2">
+      <% @student.interests_tokens.each do |interest| %>
+        <span class="text-[11px] font-semibold bg-slate-900 text-white px-2 py-1 rounded"><%= interest %></span>
+      <% end %>
+      <% if @student.interests_tokens.empty? %>
+        <span class="text-xs text-slate-500">Sem interesses definidos.</span>
+      <% end %>
+    </div>
+    <p class="text-sm text-slate-700"><span class="font-semibold">Objetivo:</span> <%= @student.learning_goal.presence || 'Sem objetivo.' %></p>
+    <p class="text-sm text-slate-700"><span class="font-semibold">Disponibilidade:</span> <%= @student.availability.presence || 'Não informada' %></p>
+    <p class="text-sm text-slate-700"><span class="font-semibold">Nível:</span> <%= @student.proficiency_level.presence || 'Não informado' %></p>
+    <p class="text-sm text-slate-700"><span class="font-semibold">Contato:</span> <%= @student.contact_info %></p>
+  </div>
+  <div class="mt-6">
+    <%= link_to 'Voltar', students_path, class: 'text-sm font-medium text-brand-600 hover:text-brand-700' %>
+  </div>
+</div>
