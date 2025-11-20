@@ -1,47 +1,165 @@
 <%= breadcrumb(['Início', root_path], ['Conexões', nil]) %>
+
 <div class="mb-8">
   <h1 class="text-3xl font-semibold text-slate-900 mb-2">Conexões Aluno ↔ Mentor</h1>
-  <p class="text-sm text-slate-600">Sugestões automáticas baseadas em interesses, disponibilidade e objetivo de aprendizagem.</p>
+  <p class="text-sm text-slate-600">Gerencie sugestões, conexões pendentes e ativas.</p>
 </div>
-<% if @matches.empty? %>
-  <p class="text-sm text-slate-500">Nenhum aluno cadastrado para gerar conexões.</p>
-<% else %>
-  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-animate-stagger>
-    <% @matches.each do |item| %>
-      <% student = item[:student]; mentor = item[:mentor]; score = item[:score] %>
-      <div class="rounded-xl bg-white border border-slate-200 p-5 shadow-sm hover:shadow-md transition flex flex-col">
-        <div class="flex items-start justify-between mb-2">
-          <h2 class="font-semibold text-slate-900 text-base"><%= student.full_name %></h2>
-          <% if student.proficiency_level.present? %>
-            <span class="text-[10px] uppercase tracking-wide font-semibold bg-slate-100 text-slate-600 px-2 py-1 rounded"><%= student.proficiency_level %></span>
-          <% end %>
-        </div>
-        <div class="mb-2 flex flex-wrap gap-1">
-          <% student.interests_tokens.each do |i| %>
-            <span class="text-[10px] font-medium bg-slate-900 text-white px-2 py-1 rounded"><%= i %></span>
-          <% end %>
-        </div>
-        <p class="text-xs text-slate-600 mb-3 line-clamp-4"><%= student.learning_goal.presence || 'Sem objetivo.' %></p>
-        <% if mentor %>
-          <div class="mt-auto rounded-lg border border-brand-200 bg-brand-50 p-3">
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-[11px] font-semibold text-brand-700">Mentor sugerido</span>
-              <span class="text-[10px] font-bold text-brand-600">Score <%= score %></span>
+
+<!-- Tabs -->
+<div class="mb-6 border-b border-slate-200">
+  <nav class="flex gap-6">
+    <%= link_to match_path(tab: 'sugestoes'), class: "pb-3 px-1 border-b-2 text-sm font-medium transition #{@tab == 'sugestoes' ? 'border-brand-600 text-brand-600' : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'}" do %>
+      💡 Sugestões
+    <% end %>
+    <%= link_to match_path(tab: 'pendentes'), class: "pb-3 px-1 border-b-2 text-sm font-medium transition #{@tab == 'pendentes' ? 'border-brand-600 text-brand-600' : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'}" do %>
+      ⏳ Pendentes
+      <% if @tab != 'pendentes' %>
+        <% pending_count = Match.pending.count %>
+        <% if pending_count > 0 %>
+          <span class="ml-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full"><%= pending_count %></span>
+        <% end %>
+      <% end %>
+    <% end %>
+    <%= link_to match_path(tab: 'ativas'), class: "pb-3 px-1 border-b-2 text-sm font-medium transition #{@tab == 'ativas' ? 'border-brand-600 text-brand-600' : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'}" do %>
+      ✅ Ativas
+    <% end %>
+  </nav>
+</div>
+
+<!-- Tab Content -->
+<% if @tab == 'sugestoes' %>
+  <div>
+    <% if @suggestions.empty? %>
+      <div class="text-center py-12 bg-slate-50 rounded-lg border border-slate-200">
+        <p class="text-sm text-slate-500">Todos os alunos já possuem conexões aceitas.</p>
+        <%= link_to 'Cadastrar Novo Aluno', new_student_path, class: 'mt-3 inline-block text-sm font-semibold text-brand-600 hover:text-brand-700' %>
+      </div>
+    <% else %>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-animate-stagger>
+        <% @suggestions.each do |item| %>
+          <% student = item[:student]; mentor = item[:mentor]; score = item[:score] %>
+          <div class="rounded-xl bg-white border border-slate-200 p-5 shadow-sm hover:shadow-md transition flex flex-col">
+            <div class="flex items-start justify-between mb-2">
+              <h2 class="font-semibold text-slate-900 text-base"><%= student.full_name %></h2>
+              <% if student.proficiency_level.present? %>
+                <span class="text-[10px] uppercase tracking-wide font-semibold bg-slate-100 text-slate-600 px-2 py-1 rounded"><%= student.proficiency_level %></span>
+              <% end %>
             </div>
-            <p class="text-sm font-medium text-slate-900"><%= mentor.full_name %> <span class="text-[10px] ml-2 uppercase tracking-wide bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded"><%= mentor.expertise %></span></p>
-            <p class="text-xs text-slate-600 mt-1"><%= mentor.bio.to_s.truncate(90) %></p>
-            <div class="mt-2 flex gap-3 text-[11px] font-semibold">
-              <%= link_to 'Ver Mentor', mentor_path(mentor), class: 'text-brand-600 hover:text-brand-700' %>
-              <%= link_to 'Ver Aluno', student_path(student), class: 'text-slate-600 hover:text-slate-800' %>
+            <div class="mb-2 flex flex-wrap gap-1">
+              <% student.interests_tokens.each do |i| %>
+                <span class="text-[10px] font-medium bg-slate-900 text-white px-2 py-1 rounded"><%= i %></span>
+              <% end %>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 line-clamp-4"><%= student.learning_goal.presence || 'Sem objetivo.' %></p>
+            <% if mentor %>
+              <div class="mt-auto rounded-lg border border-brand-200 bg-brand-50 p-3">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[11px] font-semibold text-brand-700">Mentor sugerido</span>
+                  <span class="text-[10px] font-bold text-brand-600">Score <%= score %></span>
+                </div>
+                <p class="text-sm font-medium text-slate-900"><%= mentor.full_name %> <span class="text-[10px] ml-2 uppercase tracking-wide bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded"><%= mentor.expertise %></span></p>
+                <p class="text-xs text-slate-600 mt-1"><%= mentor.bio.to_s.truncate(90) %></p>
+                <div class="mt-3 flex gap-2">
+                  <%= button_to 'Criar Conexão', matches_path(student_id: student.id, mentor_id: mentor.id, score: score), method: :post, class: 'flex-1 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold py-2 px-3 rounded transition' %>
+                </div>
+              </div>
+            <% else %>
+              <div class="mt-auto rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
+                Nenhum mentor ideal encontrado ainda.
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+<% elsif @tab == 'pendentes' %>
+  <div>
+    <% if @pending_matches.empty? %>
+      <div class="text-center py-12 bg-slate-50 rounded-lg border border-slate-200">
+        <p class="text-sm text-slate-500">Nenhuma conexão pendente no momento.</p>
+        <%= link_to '← Voltar para Sugestões', match_path(tab: 'sugestoes'), class: 'mt-3 inline-block text-sm font-semibold text-brand-600 hover:text-brand-700' %>
+      </div>
+    <% else %>
+      <div class="space-y-4" data-animate-stagger>
+        <% @pending_matches.each do |match| %>
+          <div class="rounded-xl bg-white border border-amber-200 p-5 shadow-sm hover:shadow-md transition">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="flex-1">
+                    <h3 class="font-semibold text-slate-900 text-base"><%= match.student.full_name %></h3>
+                    <p class="text-xs text-slate-600 mt-0.5">
+                      Interesses: <%= match.student.interests_tokens.join(', ') %>
+                    </p>
+                  </div>
+                  <div class="text-center px-3">
+                    <span class="text-2xl">↔️</span>
+                    <div class="text-[10px] font-bold text-brand-600 mt-1">Score <%= match.score %></div>
+                  </div>
+                  <div class="flex-1">
+                    <h3 class="font-semibold text-slate-900 text-base"><%= match.mentor.full_name %></h3>
+                    <p class="text-xs text-slate-600 mt-0.5">
+                      <span class="text-[10px] uppercase tracking-wide bg-slate-200 text-slate-700 px-2 py-0.5 rounded"><%= match.mentor.expertise %></span>
+                    </p>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-500">Criada em <%= match.created_at.strftime('%d/%m/%Y às %H:%M') %></p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <%= button_to accept_match_path(match), method: :patch, class: 'bg-green-600 hover:bg-green-700 text-white text-xs font-semibold py-2 px-4 rounded transition whitespace-nowrap' do %>
+                  ✓ Aceitar
+                <% end %>
+                <%= button_to reject_match_path(match), method: :patch, class: 'bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-2 px-4 rounded transition whitespace-nowrap', data: { confirm: 'Tem certeza que deseja rejeitar esta conexão?' } do %>
+                  ✗ Rejeitar
+                <% end %>
+              </div>
             </div>
           </div>
-        <% else %>
-          <div class="mt-auto rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
-            Nenhum mentor ideal encontrado ainda.
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+<% elsif @tab == 'ativas' %>
+  <div>
+    <% if @active_matches.empty? %>
+      <div class="text-center py-12 bg-slate-50 rounded-lg border border-slate-200">
+        <p class="text-sm text-slate-500">Nenhuma conexão ativa ainda.</p>
+        <%= link_to '← Voltar para Sugestões', match_path(tab: 'sugestoes'), class: 'mt-3 inline-block text-sm font-semibold text-brand-600 hover:text-brand-700' %>
+      </div>
+    <% else %>
+      <div class="grid gap-4 md:grid-cols-2" data-animate-stagger>
+        <% @active_matches.each do |match| %>
+          <div class="rounded-xl bg-white border border-green-200 p-5 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xl">✅</span>
+              <span class="text-[10px] font-bold uppercase tracking-wide text-green-700 bg-green-100 px-2 py-1 rounded">Conexão Ativa</span>
+              <span class="ml-auto text-[10px] font-bold text-brand-600">Score <%= match.score %></span>
+            </div>
+            <div class="space-y-3">
+              <div class="bg-slate-50 rounded-lg p-3">
+                <div class="text-[10px] uppercase tracking-wide font-semibold text-slate-500 mb-1">Aluno</div>
+                <h3 class="font-semibold text-slate-900"><%= match.student.full_name %></h3>
+                <p class="text-xs text-slate-600 mt-1">
+                  <%= match.student.interests_tokens.join(', ') %>
+                </p>
+                <%= link_to 'Ver perfil →', student_path(match.student), class: 'text-xs font-semibold text-brand-600 hover:text-brand-700 mt-2 inline-block' %>
+              </div>
+              <div class="bg-brand-50 rounded-lg p-3">
+                <div class="text-[10px] uppercase tracking-wide font-semibold text-brand-700 mb-1">Mentor</div>
+                <h3 class="font-semibold text-slate-900"><%= match.mentor.full_name %></h3>
+                <p class="text-xs text-slate-600 mt-1">
+                  <span class="text-[10px] uppercase tracking-wide bg-slate-200 text-slate-700 px-2 py-0.5 rounded"><%= match.mentor.expertise %></span>
+                </p>
+                <%= link_to 'Ver perfil →', mentor_path(match.mentor), class: 'text-xs font-semibold text-brand-600 hover:text-brand-700 mt-2 inline-block' %>
+              </div>
+            </div>
+            <p class="text-xs text-slate-500 mt-3">Aceita em <%= match.updated_at.strftime('%d/%m/%Y às %H:%M') %></p>
           </div>
         <% end %>
       </div>
     <% end %>
   </div>
 <% end %>
-</div>

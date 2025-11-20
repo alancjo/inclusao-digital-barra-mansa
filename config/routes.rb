@@ -4,7 +4,12 @@ Rails.application.routes.draw do
   resources :mentors
   resources :supporters
   resources :students
+
   get "match", to: "matches#index"
+  post "matches", to: "matches#create", as: :matches
+  patch "matches/:id/accept", to: "matches#accept", as: :accept_match
+  patch "matches/:id/reject", to: "matches#reject", as: :reject_match
+
   get "sobre", to: "pages#about", as: :about
 
   root to: "home#index"
