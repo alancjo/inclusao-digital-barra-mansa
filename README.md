@@ -9,7 +9,7 @@
 
 **Plataforma digital para conectar alunos de baixa renda com mentores voluntários de tecnologia**
 
-[Demo](#-funcionalidades) • [Instalação](#-instalação-e-como-rodar) • [Uso](#-como-usar) • [Contribuir](#-contribuindo)
+[Demo](#-funcionalidades) • [Instalação](#-instalação-e-como-rodar) • [Uso](#-como-usar)
 
 </div>
 
