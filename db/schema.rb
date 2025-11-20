@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_20_150000) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_20_193856) do
+  create_table "matches", force: :cascade do |t|
+    t.integer "student_id", null: false
+    t.integer "mentor_id", null: false
+    t.integer "score"
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mentor_id"], name: "index_matches_on_mentor_id"
+    t.index ["student_id", "mentor_id"], name: "index_matches_on_student_id_and_mentor_id", unique: true
+    t.index ["student_id"], name: "index_matches_on_student_id"
+  end
+
   create_table "mentors", force: :cascade do |t|
     t.string "full_name", null: false
     t.string "expertise", null: false
@@ -39,4 +51,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_20_150000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "matches", "mentors"
+  add_foreign_key "matches", "students"
 end
