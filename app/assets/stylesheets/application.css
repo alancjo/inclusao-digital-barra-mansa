@@ -8,3 +8,19 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/* Staggered fade & slide in animation */
+@keyframes fadeSlideIn {
+	0% { opacity: 0; transform: translateY(12px); }
+	100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-slide {
+	opacity: 0;
+	animation: fadeSlideIn .5s cubic-bezier(.22,.84,.43,1) forwards;
+}
+
+/* Optional: reduce motion respect */
+@media (prefers-reduced-motion: reduce) {
+	.animate-fade-slide { animation: none; opacity: 1; transform: none; }
+}
